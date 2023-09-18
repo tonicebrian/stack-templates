@@ -1,0 +1,74 @@
+{-# START_FILE stack.yaml #-}
+resolver: lts-20.26
+
+packages:
+- .
+- lib1/
+- lib2/
+- app/
+
+extra-deps: []
+
+{-# START_FILE package.yaml #-}
+name: root
+version: 0.1.0.0
+
+library:
+  exposed-modules: []
+  dependencies:
+    - base >= 4.7 && < 5
+
+{-# START_FILE lib1/package.yaml #-}
+name: lib1
+version: 0.1.0.0
+
+library:
+  source-dirs: src
+  dependencies:
+    - base >= 4.7 && < 5
+
+{-# START_FILE lib1/src/Lib1.hs #-}
+module Lib1 where
+
+helloLib1 :: String
+helloLib1 = "Hello from Lib1!"
+
+{-# START_FILE lib2/package.yaml #-}
+name: lib2
+version: 0.1.0.0
+
+library:
+  source-dirs: src
+  dependencies:
+    - base >= 4.7 && < 5
+
+{-# START_FILE lib2/src/Lib2.hs #-}
+module Lib2 where
+
+helloLib2 :: String
+helloLib2 = "Hello from Lib2!"
+
+{-# START_FILE app/package.yaml #-}
+name: app
+version: 0.1.0.0
+
+dependencies:
+- lib1
+- lib2
+
+executable:
+  main: Main.hs
+  source-dirs: src
+  dependencies:
+    - base >= 4.7 && < 5
+
+{-# START_FILE app/src/Main.hs #-}
+module Main where
+
+import Lib1
+import Lib2
+
+main :: IO ()
+main = do
+  putStrLn helloLib1
+  putStrLn helloLib2
